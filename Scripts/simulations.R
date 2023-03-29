@@ -1,4 +1,5 @@
 ## exploring data
+setwd("D:\\Stat6080\\Project")
 load("all_qb_tds.RData")
 all_qb_tds[[1]]
 sum(!is.na(all_qb_tds[[1]]))
@@ -11,35 +12,45 @@ new_list
 View(new_list[[1]])
 
 ## Creating new list that only has data with at least 1 non na value
-qb_list <- list()
+## Dropping all 0 after, so this is now just no_na_list
+no_na_list <- list()
 for (i in seq_len(length(all_qb_tds))) {
   if (sum(!is.na(all_qb_tds[[i]])) != 0) {
-    qb_list <- c(qb_list, all_qb_tds[i])
+    no_na_list <- c(no_na_list, all_qb_tds[i])
   }
 }
-length(qb_list)
+length(no_na_list)
 
 # Testing how to sample one season for 1 player 1000 times
-sample(qb_list[[1]][, 1], 1000, replace = TRUE)
+sample(no_na_list[[1]][, 1], 1000, replace = TRUE)
 
 ## editing data in qb_list to make all observations in all data frames
 ## numeric
 
 ## example to show why
 
-qb_list[[128]][, 1]
+no_na_list[[128]][, 1]
 
-for (i in seq_len(length(qb_list))) {
+for (i in seq_len(length(no_na_list))) {
   # Setting all data as numeric
-  qb_list[[i]][, 1] <- as.numeric(qb_list[[i]][, 1])
+  no_na_list[[i]][, 1] <- as.numeric(no_na_list[[i]][, 1])
   # converting NA to 0
-  qb_list[[i]][, 1] <-
-    ifelse(is.na(qb_list[[i]][, 1]), 0, qb_list[[i]][, 1])
+  no_na_list[[i]][, 1] <-
+    ifelse(is.na(no_na_list[[i]][, 1]), 0, no_na_list[[i]][, 1])
 }
 ## Testing to see if it worked as intended with a known example
 ## that included NAs.
 
-qb_list[[128]][, 1]
+no_na_list[[128]][, 1]
+
+## New list to exclude guys with only 0's
+qb_list <- list()
+for (i in seq_len(length(no_na_list))) {
+  if (sum(no_na_list[[i]]) != 0) {
+    qb_list <- c(qb_list, no_na_list[i])
+  }
+}
+length(qb_list)
 
 # creating new data frame to store observed samples
 data_format <- function() {
@@ -84,7 +95,7 @@ for (i in seq_len(length(qb_list))) {
   vec <- c()
   # taking all seasons up to and including last peak season
   x <- qb_list[[i]][, 1]
-  y <- qb_list[[i]][1:max(which(x == max(x))), ]
+  y <- x[1:max(which(x == max(x)))]
   for (j in 1:1000) {
     # taking sample of career up to and including 1st peak season
     vec[j] <- sum(sample(y, length(y), TRUE))
@@ -92,6 +103,51 @@ for (i in seq_len(length(qb_list))) {
   retire_best[i, 2:1001] <- vec
 }
 
-write.csv(one_season, "D:/Stat 6080/Project/one_season.csv")
-write.csv(ten_seasons, "D:/Stat 6080/Project/ten_seasons.csv")
-write.csv(retire_best, "D:/Stat 6080/Project/retire_best.csv")
+## Dropping seasons of 0 TD
+drop_zeros <- data_format()
+for (i in seq_len(length(qb_list))){
+  drop_zeros[i,1] <- colnames(qb_list[[i]])
+  vec <- c()
+  x <- qb_list[[i]][, 1]
+  y <- x[x != 0]
+  for (j in 1:1000) {
+    # taking sample of 10 seasons without seasons of 0 TDs
+    vec[j] <- sum(sample(y, 10, TRUE))
+  }
+  drop_zeros[i, 2:1001] <- vec
+}
+
+
+## 5 seasons QBs or more
+five_seasons <- list()
+for (i in seq_len(length(qb_list))) {
+  if (length(qb_list[[i]][,1]) >= 5) {
+    five_seasons <- c(five_seasons, qb_list[i])
+  }
+}
+length(five_seasons)
+
+
+
+## Dropping 2 best and 2 worst seasons. Only QBs with at least 5 seasons 
+## are included
+drop_high_low <- data_format()
+for (i in seq_len(length(five_seasons))){
+  drop_high_low[i,1] <- colnames(five_seasons[[i]])
+  vec <- c()
+  x <- five_seasons[[i]][, 1]
+  y <- sort(x)[3:(length(x)-2)]
+  for (j in 1:1000) {
+    # taking sample of 10 seasons without top 2 and bottom 2 seasons
+    vec[j] <- sum(sample(y, 10, TRUE))
+  }
+  drop_high_low[i, 2:1001] <- vec
+}
+
+
+
+write.csv(one_season, "D:/Stat6080/Project/one_season.csv")
+write.csv(ten_seasons, "D:/Stat6080/Project/ten_seasons.csv")
+write.csv(retire_best, "D:/Stat6080/Project/retire_best.csv")
+write.csv(drop_zeros, "D:/Stat6080/Project/drop_zeros.csv")
+write.csv(drop_high_low, "D:/Stat6080/Project/drop_high_low.csv")
