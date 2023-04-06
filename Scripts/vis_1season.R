@@ -53,7 +53,7 @@ data <- one_season %>%
   select(-c(QB, ...1, mean))
 sim_means <- colMeans(data)
 # Plot of the distribution
-plot(sim_means, main = "Mean touchdown passes for each simulation",
+plot(sim_means, main = "Mean touchdown passes for each simulation \n (One season)",
      ylab = "simulated mean",
      xlab = "simulation number")
 abline(h = total_sim_mean, lwd = 3)
@@ -62,7 +62,7 @@ abline(h = total_sim_mean, lwd = 3)
 # ggplot(sim_means1, aes(x = 1:1000, y = sim_means) +
 #          geom_point(data = sim_means1$sim_means))
 
-hist(one_season$mean, main = "Means touchdown passes of players",
+hist(one_season$mean, main = "Means touchdown passes of players \n (One season)",
      xlab = "Mean value",
      ylab = "Number of Players")
 
@@ -125,7 +125,7 @@ plot(
 plot(
   x = 1:1000, y = cum_prop_rodney,
   type = "l",
-  main = "Cumulative means for three random players",
+  main = "Cumulative means for three random players \n (One season)",
   ylab = "Touchdown passes",
   xlab = "Simulation",
 )
@@ -176,15 +176,15 @@ plot(
   x = 1:1000, y = one$cum_prop,
   type = "l",
   ylim = c(10, 35),
-  main = "Cumulative mean for Top Twelve players",
-  sub = "Other Players: Peyton Manning, Drew Brees, Tom Brady,\n Brett Favre, Philip Rivers, Dan Marino, Ben Roethlisberger,\n Eli Manning, Carson Palmer, Fran Tarkenton",
+  main = "Cumulative mean for Top Twelve players \n (One season)",
+  sub = "Other Players: Peyton Manning, Tom Brady,\n Brett Favre, Philip Rivers, Dan Marino, Ben Roethlisberger,\n Eli Manning, Carson Palmer, Fran Tarkenton",
   ylab = "Touchdown passes",
   xlab = "",
 )
-legend("bottomright", legend = c("Andrew Luck and Jim Kelly", "All others"),
-       col = c("red", "black"), lty = 1:1, cex = 0.8)
+legend("bottomright", legend = c("Drew Brees", "Andrew Luck and Jim Kelly", "All others"),
+       col = c("blue", "red", "black"), lty = 1:1, cex = 0.8)
 lines(x = 1:1000, y = two$cum_prop, col = "red")
-lines(x = 1:1000, y = three$cum_prop)
+lines(x = 1:1000, y = three$cum_prop, col = "blue")
 lines(x = 1:1000, y = four$cum_prop)
 lines(x = 1:1000, y = five$cum_prop)
 lines(x = 1:1000, y = six$cum_prop)

@@ -4,7 +4,7 @@ library(readr)
 library(tidyverse)
 library(ggplot2)
 #
-load("~/School/Data Technologies/Group Project/STAT-6080/data-raw/all_qb_tds.RData")
+# load("~/School/Data Technologies/Group Project/STAT-6080/data-raw/all_qb_tds.RData")
 load("~/School/Data Technologies/Group Project/STAT-6080/data-raw/td_final_list.RData")
 # load("~/School/Data Technologies/Group Project/STAT-6080/data-raw/letter_urls.RData")
 
@@ -13,3 +13,97 @@ drop_high_low <- read_csv("data-raw/drop_high_low.csv")
 # drop_zeros <- read_csv("data-raw/drop_zeros.csv")
 # retire_best <- read_csv("data-raw/retire_best.csv")
 # ten_seasons <- read_csv("data-raw/ten_seasons.csv")
+
+# Calculate Mean
+means_hl <- numeric()
+dataset1 <- drop_high_low %>%
+  select(-c(QB, ...1))
+for(i in 1:nrow(dataset1)) {
+  means_hl[i] <- mean(unlist(dataset1[i, ]))
+}
+
+ten_seasons_hl <- drop_high_low %>%
+  mutate(mean = means_hl) %>%
+  arrange(-mean)
+
+total_sim_mean_hl <- mean(ten_seasons_hl$mean)
+
+
+data_hl <- ten_seasons_hl %>%
+  select(-c(QB, ...1, mean))
+sim_means_hl <- colMeans(data_hl)
+# Plot of the distribution
+plot(sim_means_hl, main = "Mean touchdown passes for each simulation \n (Removed Highs and Lows)",
+     ylab = "simulated mean",
+     xlab = "simulation number")
+abline(h = total_sim_mean_hl, lwd = 3)
+
+
+hist(ten_seasons_hl$mean, main = "Means touchdown passes of players \n (Removed Highs and Lows)",
+     xlab = "Mean value",
+     ylab = "Number of Players")
+
+
+
+# Top Twelve
+top_t_hl <- ten_seasons_hl[1:12,]
+top_t_hl
+# Note that Jim Kelly, Andrew Luck, and Jay Cutler are not of the top twelve pre-specified.
+top_twelve_hl <- top_t_hl %>%
+  pivot_longer(X1:X1000, values_to = "tdp")
+top_means_hl <- top_twelve_hl %>%
+  group_by(QB) %>%
+  summarize(cum_prop = cumsum(tdp) / 1:1000)
+top_means_hl
+
+one <- top_means_hl %>%
+  filter(QB == "Peyton Manning")
+two <- top_means_hl %>%
+  filter(QB == "Andrew Luck")
+three <- top_means_hl %>%
+  filter(QB == "Drew Brees")
+four <- top_means_hl %>%
+  filter(QB == "Tom Brady")
+five <- top_means_hl %>%
+  filter(QB == "Brett Favre")
+six <- top_means_hl %>%
+  filter(QB == "Philip Rivers")
+seven <- top_means_hl %>%
+  filter(QB == "Dan Marino")
+eight <- top_means_hl %>%
+  filter(QB == "Ben Roethlisberger")
+nine <- top_means_hl %>%
+  filter(QB == "Eli Manning")
+ten <- top_means_hl %>%
+  filter(QB == "Jim Kelly")
+eleven <- top_means_hl %>%
+  filter(QB == "Carson Palmer")
+twelve <- top_means_hl %>%
+  filter(QB == "Jay Cutler")
+
+plot(
+  x = 1:1000, y = one$cum_prop,
+  type = "l",
+  ylim = c(150, 320),
+  main = "Cumulative mean for Top Twelve players \n (Removed Highs and Lows)",
+  sub = "Other Players: Peyton Manning, Drew Brees, Tom Brady,\n Brett Favre, Philip Rivers, Dan Marino, Ben Roethlisberger,\n Eli Manning, and Carson Palmer",
+  ylab = "Touchdown passes",
+  xlab = "",
+)
+legend("bottomright", legend = c("Drew Brees", "Andrew Luck, Jim Kelly, and Jay Cutler", "All others"),
+       col = c("blue", "red", "black"), lty = 1:1, cex = 0.8)
+lines(x = 1:1000, y = two$cum_prop, col = "red")
+lines(x = 1:1000, y = three$cum_prop, col = "blue")
+lines(x = 1:1000, y = four$cum_prop)
+lines(x = 1:1000, y = five$cum_prop)
+lines(x = 1:1000, y = six$cum_prop)
+lines(x = 1:1000, y = seven$cum_prop)
+lines(x = 1:1000, y = eight$cum_prop)
+lines(x = 1:1000, y = nine$cum_prop)
+lines(x = 1:1000, y = ten$cum_prop, col = "red")
+lines(x = 1:1000, y = eleven$cum_prop)
+lines(x = 1:1000, y = twelve$cum_prop, col = "red")
+
+
+
+
