@@ -30,18 +30,18 @@ one_season <- read_csv("data-raw/one_season.csv")
 #   mutate(mean = mean(X1:X1000)) %>%
 #   arrange(-mean)
 
-means <- numeric()
-dataset0 <- one_season %>%
+means_os <- numeric()
+dataset_os <- one_season %>%
   select(-c(QB, ...1))
-for(i in 1:nrow(dataset0)) {
-  means[i] <- mean(unlist(dataset0[i, ]))
+for(i in 1:nrow(dataset_os)) {
+  means_os[i] <- mean(unlist(dataset_os[i, ]))
 }
 
-one_season <- one_season %>%
-  mutate(mean = means) %>%
+one_season_os <- one_season %>%
+  mutate(mean = means_os) %>%
   arrange(-mean)
 
-total_sim_mean <- mean(one_season$mean)
+total_sim_mean_os <- mean(one_season_os$mean)
 
 # drew_one_seas <- one_season %>%
 #   filter(QB == "Drew Brees")
@@ -49,20 +49,20 @@ total_sim_mean <- mean(one_season$mean)
 #   select(-c(QB, mean, ...1)) %>%
 #   print(.[1,])
 
-data <- one_season %>%
+data_os <- one_season_os %>%
   select(-c(QB, ...1, mean))
-sim_means <- colMeans(data)
+sim_means_os <- colMeans(data_os)
 # Plot of the distribution
-plot(sim_means, main = "Mean touchdown passes for each simulation \n (One season)",
+plot(sim_means_os, main = "Mean touchdown passes for each simulation \n (One season)",
      ylab = "simulated mean",
      xlab = "simulation number")
-abline(h = total_sim_mean, lwd = 3)
+abline(h = total_sim_mean_os, lwd = 3)
 
 # sim_means1 <- as.data.frame(sim_means)
 # ggplot(sim_means1, aes(x = 1:1000, y = sim_means) +
 #          geom_point(data = sim_means1$sim_means))
 
-hist(one_season$mean, main = "Means touchdown passes of players \n (One season)",
+hist(one_season_os$mean, main = "Means touchdown passes of players \n (One season)",
      xlab = "Mean value",
      ylab = "Number of Players")
 
@@ -71,7 +71,7 @@ set.seed(327)
 players <- sample(1:685, 3)
 players
 
-three_players <- one_season %>%
+three_players <- one_season_os %>%
   filter(...1 %in% players)
 three_players
 
@@ -137,47 +137,47 @@ legend("right", legend = c("Rodney Peete", "Thaddeus Lewis",
 
 
 # Top Twelve
-top_t <- one_season[1:12,]
-top_t
+top_t_os <- one_season_os[1:12,]
+top_t_os
 # Note that Jim Kelly and Andrew Luck are not of the top twelve pre-specified.
-top_twelve <- top_t %>%
+top_twelve_os <- top_t_os %>%
   pivot_longer(X1:X1000, values_to = "tdp")
-top_means <- top_twelve %>%
+top_means_os <- top_twelve_os %>%
   group_by(QB) %>%
   summarize(cum_prop = cumsum(tdp) / 1:1000)
-top_means
+top_means_os
 
-one <- top_means %>%
+one <- top_means_os %>%
   filter(QB == "Peyton Manning")
-two <- top_means %>%
+two <- top_means_os %>%
   filter(QB == "Andrew Luck")
-three <- top_means %>%
+three <- top_means_os %>%
   filter(QB == "Drew Brees")
-four <- top_means %>%
+four <- top_means_os %>%
   filter(QB == "Tom Brady")
-five <- top_means %>%
+five <- top_means_os %>%
   filter(QB == "Brett Favre")
-six <- top_means %>%
+six <- top_means_os %>%
   filter(QB == "Philip Rivers")
-seven <- top_means %>%
+seven <- top_means_os %>%
   filter(QB == "Dan Marino")
-eight <- top_means %>%
+eight <- top_means_os %>%
   filter(QB == "Ben Roethlisberger")
-nine <- top_means %>%
+nine <- top_means_os %>%
   filter(QB == "Eli Manning")
-ten <- top_means %>%
+ten <- top_means_os %>%
   filter(QB == "Jim Kelly")
-eleven <- top_means %>%
+eleven <- top_means_os %>%
   filter(QB == "Carson Palmer")
-twelve <- top_means %>%
-  filter(QB == "Fran Tarkenton")
+twelve <- top_means_os %>%
+  filter(QB == "Tony Romo")
 
 plot(
   x = 1:1000, y = one$cum_prop,
   type = "l",
   ylim = c(10, 35),
   main = "Cumulative mean for Top Twelve players \n (One season)",
-  sub = "Other Players: Peyton Manning, Tom Brady,\n Brett Favre, Philip Rivers, Dan Marino, Ben Roethlisberger,\n Eli Manning, Carson Palmer, Fran Tarkenton",
+  sub = "Other Players: Peyton Manning, Tom Brady,\n Brett Favre, Philip Rivers, Dan Marino, Ben Roethlisberger,\n Eli Manning, Carson Palmer, Tony Romo",
   ylab = "Touchdown passes",
   xlab = "",
 )

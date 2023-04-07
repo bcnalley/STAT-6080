@@ -154,7 +154,7 @@ plot(
   xlab = "",
 )
 legend("bottomright", legend = c("Drew Brees", "Andrew Luck, Jim Kelly, and Tony Romo", "All others"),
-       col = c("blue", "red", "black"), lty = 1:1, cex = 0.8)
+       col = c("blue", "red", "black"), lty = 1:1, cex = 0.6)
 lines(x = 1:1000, y = two$cum_prop, col = "red")
 lines(x = 1:1000, y = three$cum_prop, col = "blue")
 lines(x = 1:1000, y = four$cum_prop)
