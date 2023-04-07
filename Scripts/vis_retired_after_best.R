@@ -84,9 +84,8 @@ plot(
   type = "l",
   ylim = c(100, 500),
   main = "Cumulative mean for Top Twelve players \n (Retired after best)",
-  sub = "Other Players: ",
   ylab = "Touchdown passes",
-  xlab = "",
+  xlab = "Simulation",
   col = "red"
 )
 legend("bottomright", legend = c("Drew Brees", "Peyton Manning", "Ben Roethlisberger", "All others"),
