@@ -86,14 +86,14 @@ plot(
   type = "l",
   ylim = c(130, 320),
   main = "Cumulative mean for Top Twelve players \n (Removed Zeros)",
-  sub = "Other Players: Peyton Manning, Tom Brady,\n Brett Favre, Philip Rivers, Dan Marino, Ben Roethlisberger,\n Eli Manning, and Carson Palmer",
+  sub = "Other Players: Peyton Manning, Drew Brees,\n Brett Favre, Philip Rivers, Dan Marino, Ben Roethlisberger,\n Eli Manning, and Carson Palmer",
   ylab = "Touchdown passes",
   xlab = "",
 )
-legend("bottomright", legend = c("Drew Brees", "Andrew Luck, Tony Romo, and Jim Kelly", "All others"),
+legend("bottomright", legend = c("Tom Brady", "Andrew Luck, Tony Romo, and Jim Kelly", "All others"),
        col = c("blue", "red", "black"), lty = 1:1, cex = 0.8)
-lines(x = 1:1000, y = two$cum_prop)
-lines(x = 1:1000, y = three$cum_prop, col = "blue")
+lines(x = 1:1000, y = two$cum_prop, col = "blue")
+lines(x = 1:1000, y = three$cum_prop)
 lines(x = 1:1000, y = four$cum_prop, col = "red")
 lines(x = 1:1000, y = five$cum_prop)
 lines(x = 1:1000, y = six$cum_prop)

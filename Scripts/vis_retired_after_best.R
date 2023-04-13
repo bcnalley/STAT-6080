@@ -88,17 +88,17 @@ plot(
   xlab = "Simulation",
   col = "red"
 )
-legend("bottomright", legend = c("Drew Brees", "Peyton Manning", "Ben Roethlisberger", "All others"),
+legend("bottomright", legend = c("Tom Brady", "Peyton Manning", "Ben Roethlisberger", "All others"),
        col = c("blue", "red", "forestgreen", "black"), lty = 1:1, cex = 0.6, lwd = 2)
 lines(x = 1:1000, y = two$cum_prop, col = "forestgreen")
 lines(x = 1:1000, y = three$cum_prop)
-lines(x = 1:1000, y = four$cum_prop, col = "blue")
+lines(x = 1:1000, y = four$cum_prop)
 lines(x = 1:1000, y = five$cum_prop)
 lines(x = 1:1000, y = six$cum_prop)
 lines(x = 1:1000, y = seven$cum_prop)
 lines(x = 1:1000, y = eight$cum_prop)
 lines(x = 1:1000, y = nine$cum_prop)
-lines(x = 1:1000, y = ten$cum_prop)
+lines(x = 1:1000, y = ten$cum_prop, col = "blue")
 lines(x = 1:1000, y = eleven$cum_prop)
 lines(x = 1:1000, y = twelve$cum_prop)
 
