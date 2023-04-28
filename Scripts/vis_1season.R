@@ -43,11 +43,6 @@ one_season_os <- one_season %>%
 
 total_sim_mean_os <- mean(one_season_os$mean)
 
-# drew_one_seas <- one_season %>%
-#   filter(QB == "Drew Brees")
-# cumProp <- drew_one_seas %>%
-#   select(-c(QB, mean, ...1)) %>%
-#   print(.[1,])
 
 data_os <- one_season_os %>%
   select(-c(QB, ...1, mean))
@@ -57,10 +52,6 @@ plot(sim_means_os, main = "Mean touchdown passes for each simulation \n (One sea
      ylab = "simulated mean",
      xlab = "simulation number")
 abline(h = total_sim_mean_os, lwd = 3)
-
-# sim_means1 <- as.data.frame(sim_means)
-# ggplot(sim_means1, aes(x = 1:1000, y = sim_means) +
-#          geom_point(data = sim_means1$sim_means))
 
 hist(one_season_os$mean, main = "Means touchdown passes of players \n (One season)",
      xlab = "Mean value",
